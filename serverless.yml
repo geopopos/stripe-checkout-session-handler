@@ -11,10 +11,11 @@ custom:
 provider:
   name: aws
   runtime: python3.8
+  stage: dev
   environments:
     - STRIPE_API_KEY: ${param:STRIPE_API_KEY}
     - STRIPE_TEST_API_KEY: ${param:STRIPE_TEST_API_KEY}
-    - STAGE: ${opt:stage}
+    - STAGE: ${self:provider.stage}
     - STRIPE_TEST_LOCAL_SECRET: ${param:STRIPE_TEST_LOCAL_SECRET}
 
 functions:
