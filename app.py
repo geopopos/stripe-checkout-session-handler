@@ -12,10 +12,16 @@ stripe.api_key = stripe_api_key
 # If you are testing with the CLI, find the secret by running 'stripe listen'
 # If you are using an endpoint defined with the API or dashboard, look in your webhook settings
 # at https://dashboard.stripe.com/webhooks
-endpoint_secret = 'whsec_2dd6c7f844beb58748849962ed2d82f8cda4d6bcf7a1c69c0963de7717ebeee8'
+endpoint_secret = os.environ.get('STRIPE_TEST_LOCAL_SECRET')
+stripe_api_key = os.environ.get("STRIPE_API_KEY")
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
+
+# check if serverless is running offline
+if os.environ.get('IS_OFFLINE') == 'True' or os.environ.get('STAGE') == 'dev':
+    # set stripe api key to stripe test api key
+    stripe_api_key = os.environ.get("STRIPE_TEST_API_KEY")
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
